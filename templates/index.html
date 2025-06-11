@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VWAP Algo</title>
+</head>
+<body>
+  <h2>VWAP Algo Status: {{ 'ON' if status else 'OFF' }}</h2>
+  <form action="/start" method="post">
+    <button type="submit">START</button>
+  </form>
+  <form action="/stop" method="post">
+    <button type="submit">STOP</button>
+  </form>
+</body>
+</html>
