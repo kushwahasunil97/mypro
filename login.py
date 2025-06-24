@@ -1,9 +1,6 @@
 from SmartApi.smartConnect import SmartConnect
 import pyotp
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
 CLIENT_CODE = os.getenv("CLIENT_CODE")
@@ -25,6 +22,3 @@ def login():
 
     print("Login successful!")
     return smartApi
-
-if __name__ == "__main__":
-    smartApi = login()
