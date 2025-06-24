@@ -2,24 +2,59 @@
 <html>
 <head>
   <title>VWAP Algo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 60px;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    select {
+      padding: 6px;
+      font-size: 14px;
+    }
+    .balance {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- 🔷 Live Balance Top Right -->
+  <div class="balance">
+    💰 Balance: ₹{{ balance if balance else 'Error' }}
+  </div>
+
   <h2>VWAP Algo Status: {{ 'ON' if status else 'OFF' }}</h2>
+
   <form action="/start" method="post">
     <button type="submit">START</button>
   </form>
+
   <form action="/stop" method="post">
     <button type="submit">STOP</button>
   </form>
-<h3>Current Trading Mode: {{ trading_mode }}</h3>
 
-<form method="POST" action="/set_mode">
-  <label>Select Trading Mode:</label>
-  <select name="mode">
-    <option value="SIMULATED" {% if trading_mode == "SIMULATED" %}selected{% endif %}>Simulated</option>
-    <option value="REAL" {% if trading_mode == "REAL" %}selected{% endif %}>Real</option>
-  </select>
-  <button type="submit">Set Mode</button>
-</form>
+  <h3>Current Trading Mode: {{ trading_mode }}</h3>
+
+  <form method="POST" action="/set_mode">
+    <label>Select Trading Mode:</label>
+    <select name="mode">
+      <option value="SIMULATED" {% if trading_mode == "SIMULATED" %}selected{% endif %}>Simulated</option>
+      <option value="REAL" {% if trading_mode == "REAL" %}selected{% endif %}>Real</option>
+    </select>
+    <button type="submit">Set Mode</button>
+  </form>
+
 </body>
 </html>
