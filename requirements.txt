@@ -3,4 +3,6 @@ gunicorn
 python-dotenv
 requests
 pyotp
-angel-one-smartapi
+smartapi-python
+websocket-client
+logzero
