@@ -3,7 +3,7 @@ smartapi-python==1.3
 python-dotenv
 requests
 pyotp
-smartapi-python
+angel_one_smartapi
 websocket-client
 logzero
 gunicorn
