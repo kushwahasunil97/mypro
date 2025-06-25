@@ -15,7 +15,7 @@ def get_live_balance():
         smartapi = login()
         if smartapi is None:
             return None
-        funds = smartapi.rms_funds()
+        funds = smartapi.get_rms()
         return float(funds['data']['availablecash'])
     except Exception as e:
         print("❌ Error fetching balance:", e)
