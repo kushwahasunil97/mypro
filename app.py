@@ -5,11 +5,13 @@ import threading
 import os
 
 app = Flask(__name__)
-
 algo_running = False
-TRADING_MODE = os.getenv("TRADING_MODE", "SIMULATED")  # Default mode
 
-# 🔹 Get live balance using Angel One SDK
+# 🔹 Load trading mode from environment (default SIMULATED)
+TRADING_MODE = os.getenv("TRADING_MODE", "SIMULATED").upper()
+
+
+# 🔹 Get live balance from Angel One
 def get_live_balance():
     try:
         smartapi = login()
@@ -21,43 +23,52 @@ def get_live_balance():
         print("❌ Error fetching balance:", e)
         return None
 
-# 🔹 Algo thread starter
+
+# 🔹 Algo Thread Function
 def run_algo():
     start_algo(TRADING_MODE)
 
-# 🔹 Home route (Dashboard)
+
+# 🔹 Home Dashboard
 @app.route('/')
 def index():
     balance = get_live_balance()
-    return render_template('index.html',
+    return render_template(
+        'index.html',
         status=algo_running,
         trading_mode=TRADING_MODE,
         balance=balance
     )
 
-# 🔹 Mode change handler
+
+# 🔹 Change Trading Mode (REAL / SIMULATED)
 @app.route('/set_mode', methods=['POST'])
 def set_mode():
     global TRADING_MODE
-    TRADING_MODE = request.form.get("mode")
+    mode = request.form.get("mode", "SIMULATED").upper()
+    if mode in ["REAL", "SIMULATED"]:
+        TRADING_MODE = mode
     return redirect('/')
 
-# 🔹 Start Algo
+
+# 🔹 Start Algo Button
 @app.route('/start', methods=['POST'])
 def start():
     global algo_running
     if not algo_running:
         algo_running = True
-        threading.Thread(target=run_algo).start()
+        threading.Thread(target=run_algo, daemon=True).start()
     return redirect('/')
 
-# 🔹 Stop Algo
+
+# 🔹 Stop Algo Button
 @app.route('/stop', methods=['POST'])
 def stop():
     global algo_running
     algo_running = False
     return redirect('/')
 
-# 🔹 Run app (if local testing, not on Render)
+
+# 🔹 Only run locally
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
