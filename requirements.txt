@@ -1,5 +1,5 @@
 flask
-angel-one-smartapi
+git+https://github.com/angel-one/angel-one-python-sdk.git
 python-dotenv
 requests
 pyotp
