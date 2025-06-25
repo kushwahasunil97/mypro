@@ -2,47 +2,57 @@ import time
 from order_manager import place_order
 from risk_control import check_loss_limit
 
+# 🔄 Algo Entry Point
 def start_algo(mode):
     loss_count = 0
+    max_losses = 2
     print(f"\n🚀 Algo Started in {mode.upper()} Mode")
 
     while True:
-        # 🔴 Loss limit checker
+        # 🔴 Check overall daily loss limit
         if check_loss_limit():
             print("🛑 Global loss limit hit. Algo exiting...")
             break
 
-        # 🔍 Signal generation (VWAP logic to be added here)
+        # 🔍 Signal detection (placeholder for VWAP logic)
         signal = get_trade_signal()
 
         if signal:
             print(f"📡 Signal detected: {signal}")
 
-            # ✅ Order Execution
-            result = (
-                place_order(signal) if mode == "REAL" else simulate_order(signal)
-            )
+            # 🎯 Execute real or simulated order
+            if mode.upper() == "REAL":
+                result = place_order(signal)
+            else:
+                result = simulate_order(signal)
 
             if result == "LOSS":
                 loss_count += 1
-                print(f"❌ Trade Loss Count: {loss_count}/2")
+                print(f"❌ Trade Loss Count: {loss_count}/{max_losses}")
 
-            if loss_count >= 2:
-                print("🛑 2 continuous losses. Algo stopped.")
+            # 🛑 Stop after N losses in a session
+            if loss_count >= max_losses:
+                print("🛑 Reached max allowed losses. Stopping Algo.")
                 break
 
         else:
-            print("⏳ No signal, waiting...")
+            print("⏳ No valid signal, sleeping for 60s...")
 
         time.sleep(60)
 
-# 🧠 Placeholder for VWAP or strategy logic
-def get_trade_signal():
-    # TODO: Add real VWAP logic here
-    return "BUY_CALL"  # Or None
 
-# 🎮 Simulated trade for testing without real execution
+# 📈 Strategy logic placeholder
+def get_trade_signal():
+    """
+    TODO: Replace with real VWAP breakout / trap logic.
+    Return one of: 'BUY_CALL', 'BUY_PUT', or None.
+    """
+    # Example dummy logic
+    return "BUY_CALL"  # Replace with real strategy conditions
+
+
+# 🧪 Simulated trade execution
 def simulate_order(signal):
     print(f"📘 SIMULATED ORDER EXECUTED: {signal}")
-    # Return "LOSS" or "PROFIT" (Can be randomized if needed)
+    # You can use random.choice(["LOSS", "PROFIT"]) here if needed
     return "LOSS"
