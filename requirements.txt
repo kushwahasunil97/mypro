@@ -1,5 +1,5 @@
 flask
-angel-one
+angel-one-smartapi
 python-dotenv
 requests
 pyotp
